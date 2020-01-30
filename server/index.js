@@ -1,8 +1,10 @@
 const express = require("express");
 const createError = require("http-errors");
 const path = require("path");
-
+const configs = require("./config");
 const app = express();
+
+const config = configs[app.get("env")];
 
 app.set("view engine", "pug");
 if (app.get("env") === "development") {
@@ -10,6 +12,12 @@ if (app.get("env") === "development") {
 }
 
 app.set("views", path.join(__dirname, "./views"));
+app.locals.title = config.sitename;
+
+app.use((req, res, next) => {
+  res.locals.rendertime = new Date();
+  return next();
+});
 
 const routes = require("./routes");
 app.use(express.static("public"));
