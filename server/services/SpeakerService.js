@@ -26,6 +26,27 @@ class SpeakerService {
       };
     });
   }
+  async getSpeaker(shortname) {
+    const data = await this.getData();
+    const speaker = data.find(speaker => {
+      return speaker.shortname === shortname;
+    });
+    if (!speaker) return null;
+    return {
+      name: speaker.name,
+      shortname: speaker.shortname,
+      title: speaker.title,
+      description: speaker.description
+    };
+  }
+  async getArtworkForSpeaker(shortname) {
+    const data = await this.getData();
+    const speaker = data.find(speaker => {
+      return speaker.shortname === shortname;
+    });
+    if (!speaker || !speaker.artwork) return null;
+    return speaker.artwork;
+  }
 
   async getList() {
     const data = await this.getData();
